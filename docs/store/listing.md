@@ -88,7 +88,7 @@ Requested at runtime only when the user enters a custom OpenAI-compatible endpoi
 
 **Remote code**: 選 **No, I am not using remote code**。
 
-**Data usage**：勾 **Website content**（使用者輸入的文字會送到使用者自己設定的端點）。三個 certification 都可以勾：不賣資料、不用於單一用途以外、不用於信用評估。
+**Data usage**：勾兩項——**Website content**（使用者輸入的文字會送到使用者自己設定的端點）和 **Authentication information**（使用者的 API key 由擴充功能儲存並隨請求傳給使用者自選的供應商）。其他類別都不勾（打字事件只在本機用於判斷停頓，從未傳輸）。三個 certification 都勾：不賣資料、不用於單一用途以外、不用於信用評估。
 
 **Privacy policy URL**:
 
