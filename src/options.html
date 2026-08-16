@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Inline Reformat 設定</title>
+    <title data-i18n="optTitle">Inline Reformat settings</title>
     <style>
       body {
         font:
@@ -96,63 +96,80 @@
     <h1>Inline Reformat</h1>
 
     <fieldset>
-      <legend>總開關</legend>
-      <label><input type="checkbox" id="enabled" /> 啟用建議</label>
+      <legend data-i18n="masterLegend">Master switch</legend>
+      <label
+        ><input type="checkbox" id="enabled" />
+        <span data-i18n="enableLabel">Enable suggestions</span></label
+      >
     </fieldset>
 
     <fieldset>
-      <legend>LLM 後端</legend>
-      <label for="provider">Provider</label>
+      <legend data-i18n="backendLegend">LLM backend</legend>
+      <label for="provider" data-i18n="providerLabel">Provider</label>
       <select id="provider">
-        <option value="anthropic">Anthropic（Claude）</option>
-        <option value="openai-compat">OpenAI-compatible（DGX / OpenRouter…）</option>
+        <option value="anthropic" data-i18n="providerAnthropic">Anthropic (Claude)</option>
+        <option value="openai-compat" data-i18n="providerCompat">
+          OpenAI-compatible (Ollama / vLLM / OpenRouter…)
+        </option>
       </select>
 
       <div id="anthropic-fields">
-        <label for="anthropicApiKey">Anthropic API key</label>
+        <label for="anthropicApiKey" data-i18n="anthropicKeyLabel">Anthropic API key</label>
         <input type="password" id="anthropicApiKey" autocomplete="off" />
-        <label for="anthropicModel">Model</label>
+        <p class="muted" data-i18n="anthropicKeyHint">
+          Get one at console.anthropic.com. The key is stored only in this browser.
+        </p>
+        <label for="anthropicModel" data-i18n="modelLabel">Model</label>
         <input type="text" id="anthropicModel" placeholder="claude-haiku-4-5" />
       </div>
 
       <div id="compat-fields" hidden>
-        <label for="compatBaseUrl">Base URL（含 /v1）</label>
-        <input type="text" id="compatBaseUrl" placeholder="http://dgx.tailnet:11434/v1" />
-        <p class="muted">儲存時會請求該網域的連線權限。</p>
-        <label for="compatApiKey">API key（本地端點可留空）</label>
+        <label for="compatBaseUrl" data-i18n="baseUrlLabel">Base URL (including /v1)</label>
+        <input type="text" id="compatBaseUrl" placeholder="http://localhost:11434/v1" />
+        <p class="muted" data-i18n="baseUrlHint">
+          Saving will ask for permission to connect to this origin.
+        </p>
+        <label for="compatApiKey" data-i18n="compatKeyLabel">
+          API key (leave empty for local endpoints)
+        </label>
         <input type="password" id="compatApiKey" autocomplete="off" />
-        <label for="compatModel">Model</label>
-        <input type="text" id="compatModel" placeholder="例如 llama3.3:70b" />
+        <label for="compatModel" data-i18n="modelLabel">Model</label>
+        <input type="text" id="compatModel" placeholder="llama3.3:70b" />
       </div>
     </fieldset>
 
     <fieldset>
-      <legend>改寫 prompt</legend>
+      <legend data-i18n="promptLegend">Rewrite prompt</legend>
       <textarea id="systemPrompt"></textarea>
-      <p class="muted">System prompt。想要更學術／更口語的語感，改這裡。</p>
+      <p class="muted" data-i18n="promptHint">
+        This is the system prompt sent with every rewrite. Edit it to shift the tone — more
+        academic, more casual, whatever you need.
+      </p>
     </fieldset>
 
     <fieldset>
-      <legend>觸發條件</legend>
+      <legend data-i18n="triggerLegend">Trigger</legend>
       <div class="row">
         <div>
-          <label for="debounceMs">停頓（毫秒）</label>
+          <label for="debounceMs" data-i18n="debounceLabel">Pause (ms)</label>
           <input type="number" id="debounceMs" min="300" step="100" />
         </div>
         <div>
-          <label for="minChars">最少字元</label>
+          <label for="minChars" data-i18n="minCharsLabel">Min characters</label>
           <input type="number" id="minChars" min="1" />
         </div>
         <div>
-          <label for="minWords">最少單字</label>
+          <label for="minWords" data-i18n="minWordsLabel">Min words</label>
           <input type="number" id="minWords" min="1" />
         </div>
       </div>
-      <label for="blocklist">停用網站（hostname，每行一個）</label>
-      <textarea id="blocklist" placeholder="mail.internal-hospital.example"></textarea>
+      <label for="blocklist" data-i18n="blocklistLabel">
+        Disabled sites (one hostname per line)
+      </label>
+      <textarea id="blocklist" placeholder="mail.example.com"></textarea>
     </fieldset>
 
-    <button id="save">儲存</button><span id="status"></span>
+    <button id="save" data-i18n="saveButton">Save</button><span id="status"></span>
     <script type="module" src="options.js"></script>
   </body>
 </html>

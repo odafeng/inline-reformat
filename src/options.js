@@ -15,6 +15,13 @@ const FIELDS = [
   'minWords',
 ];
 
+function localize() {
+  for (const el of document.querySelectorAll('[data-i18n]')) {
+    const msg = chrome.i18n.getMessage(el.dataset.i18n);
+    if (msg) el.textContent = msg;
+  }
+}
+
 function syncProviderVisibility() {
   const compat = $('provider').value === 'openai-compat';
   $('anthropic-fields').hidden = compat;
@@ -50,20 +57,21 @@ async function save() {
       const origin = new URL(s.compatBaseUrl).origin + '/*';
       const granted = await chrome.permissions.request({ origins: [origin] });
       if (!granted) {
-        $('status').textContent = '未授權該網域，無法呼叫此端點';
+        $('status').textContent = chrome.i18n.getMessage('statusDenied');
         return;
       }
     } catch {
-      $('status').textContent = 'Base URL 格式不正確';
+      $('status').textContent = chrome.i18n.getMessage('statusBadUrl');
       return;
     }
   }
 
   await chrome.storage.local.set(s);
-  $('status').textContent = '已儲存 ✓';
+  $('status').textContent = chrome.i18n.getMessage('statusSaved');
   setTimeout(() => ($('status').textContent = ''), 2000);
 }
 
+localize();
 $('provider').addEventListener('change', syncProviderVisibility);
 $('save').addEventListener('click', save);
 restore();

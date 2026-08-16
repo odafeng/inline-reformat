@@ -1,41 +1,80 @@
 # Inline Reformat
 
-打字停頓 1.5 秒，你剛打的那段英文會被 LLM 改寫成通順版本，出現在輸入框下方的小卡片裡。按 `Tab` 接受、`Esc` 關閉、繼續打字就自動消失。不用反白、不用右鍵。
+Pause typing for a second and a half, and the sentence you just wrote comes back as fluent English in a small card under the input box. Press `Tab` to accept it, `Esc` to dismiss, or just keep typing and it gets out of your way. No text selection, no right-click menu, no leaving the field.
 
-刻意不做全自動取代：LLM 偶爾會改到語意，醫療信件被悄悄改掉一個否定詞是真實風險，所以每個建議都要過你的眼睛才落地（理由詳見 `docs/adr/0001`）。IME 組字期間完全不動你的輸入框，中英混打安全。
+[繁體中文說明](README.zh-TW.md)
 
-## 安裝
+![Ghost card suggesting a rewrite below a compose box](docs/assets/ghost-card.png)
 
-1. `chrome://extensions` → 開啟「開發人員模式」
-2. 「載入未封裝項目」→ 選這個 repo 的 `src/` 資料夾
-3. 右鍵擴充功能圖示 → 選項 → 填 API key
+Built for people who write English as a second language all day (emails, papers, code review comments) and are tired of the copy-into-ChatGPT-paste-back loop.
 
-## 後端設定
+## Bring your own key
 
-| Provider          | 用途                                                                                                                       |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Anthropic（預設） | `claude-haiku-4-5`，一次建議成本約 0.1 美分以內                                                                            |
-| OpenAI-compatible | 本地 LLM（Ollama / vLLM / LM Studio）或 OpenRouter 之類，填 base URL（含 `/v1`）即可；病人相關內容建議走這條，文字不出內網 |
+There is no server behind this extension and no account to create. You plug in your own API key, and every request goes straight from your browser to the endpoint you configured. No one else sees your text, and nothing is logged.
 
-改寫的 system prompt 在選項頁可以直接編輯。想要更學術或更口語的語感，改那裡就好。
+- The key lives in `chrome.storage.local`. It never syncs to other machines and never leaves your browser.
+- Works with an Anthropic key out of the box, or with any OpenAI-compatible endpoint: Ollama or vLLM on your own hardware, LM Studio, OpenRouter.
+- Point it at a local model and your text never leaves your machine at all. This is the setup I use for anything confidential.
+- The whole extension is about 600 lines of plain JavaScript with no build step and no bundled dependencies. You can read every line that touches your key before you paste it in.
 
-API key 存在 `chrome.storage.local`，不同步到其他機器，也不會送到任何第三方；網路請求只發往你設定的那一個端點。
+## Why a suggestion card instead of auto-replace
 
-## 已知限制
+Every tool in this space eventually faces the same choice: rewrite the user's text automatically, or show a suggestion and wait. This one deliberately waits.
 
-- Google Docs 不支援（canvas 渲染，所有同類工具都做不到）
-- Overleaf 原生編輯器（CodeMirror）v1 不支援
-- 只處理英文；打中文不會觸發、也不會燒 API
+An LLM rewrite occasionally shifts meaning. If English isn't your first language, you are exactly the person least likely to notice a flipped negation in your own outgoing email. The accept keystroke keeps one pair of human eyes on every change. It also makes the extension safe with IMEs: your input field is never touched until you press Tab, so typing Chinese, Japanese, or Korean mid-sentence can't corrupt the composition buffer. And because replacement goes through the browser's native editing command, `Cmd+Z` undoes an accepted suggestion like any other edit.
 
-## 開發
+The reasoning is written up in [docs/adr/0001](docs/adr/0001-ghost-suggestion-interaction-model.md).
+
+## Install
+
+Not on the Chrome Web Store yet. From source:
+
+1. Clone this repo
+2. Open `chrome://extensions`, enable **Developer mode**
+3. Click **Load unpacked** and pick the `src/` folder
+4. Right-click the extension icon → **Options**, choose a backend, paste a key
+
+## Backends
+
+| Provider            | Notes                                                                                                                                                                               |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Anthropic (default) | Uses `claude-haiku-4-5`. A rewrite costs a fraction of a cent; heavy daily use lands around a few cents per day.                                                                    |
+| OpenAI-compatible   | Any endpoint speaking `/v1/chat/completions`, streaming included. Enter the base URL (with `/v1`) and the extension asks for permission to reach that origin, and only that origin. |
+
+## Make it write like you
+
+The system prompt is editable in Options and applies immediately. The default asks for a faithful rewrite: keep the meaning, keep the register, keep line breaks, return the text unchanged if it is already fine. If you want your emails warmer or your manuscripts more formal, say so there. That one text box is most of the product.
+
+## When it triggers, and when it deliberately doesn't
+
+A rewrite request fires only after all of these pass:
+
+- you stopped typing for 1.5 s (configurable)
+- the paragraph under your caret is at least 15 characters and 4 words
+- the text is mostly English; CJK input never triggers and never costs you a request
+- you are not mid-composition in an IME
+- the same paragraph wasn't already suggested, accepted, or dismissed
+- the site isn't on your blocklist
+
+Typing again cancels the in-flight request. Errors are silent by design; a broken key or a dead endpoint should never interrupt your writing.
+
+## Known limitations
+
+- Google Docs doesn't work. It renders text on a canvas, so no extension of this kind can reach it.
+- Code-editor components (CodeMirror and Monaco, which includes the Overleaf editor) aren't supported yet.
+- English output only. That's the scope, not a bug.
+
+## Development
 
 ```bash
 npm install
-npm test          # vitest 單元測試（lib/ 純函式）
-npm run smoke     # Playwright：真的載入擴充功能 + mock LLM 端點跑完整流程
+npm test          # vitest unit tests for the pure logic
+npm run smoke     # Playwright: loads the real extension against a mock LLM endpoint
 npm run lint
 ```
 
-架構說明在 `docs/superpowers/specs/`，兩個關鍵決策（互動模型、雙薄 client）在 `docs/adr/`。
+The design spec lives in [docs/superpowers/specs/](docs/superpowers/specs/), and the two decisions worth reading are in [docs/adr/](docs/adr/). Pre-commit hooks: `git config core.hooksPath .githooks`.
 
-Pre-commit hook 需要一次性設定：`git config core.hooksPath .githooks`。
+## License
+
+[MIT](LICENSE)

@@ -8,7 +8,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "smoke": "playwright test",
-    "lint": "eslint src tests",
+    "lint": "eslint src tests scripts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -18,5 +18,10 @@
     "globals": "^15.14.0",
     "prettier": "^3.4.2",
     "vitest": "^2.1.8"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/odafeng/inline-reformat.git"
   }
 }

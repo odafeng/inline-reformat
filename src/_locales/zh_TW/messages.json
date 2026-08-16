@@ -1,0 +1,34 @@
+{
+  "extDesc": {
+    "message": "打字停頓後，把剛打的英文改寫成通順版本顯示在輸入框下方，按 Tab 接受。自備 API key。"
+  },
+  "hintAccept": { "message": "接受" },
+  "hintDismiss": { "message": "關閉" },
+  "hintRewriting": { "message": "✨ 改寫中…" },
+  "optTitle": { "message": "Inline Reformat 設定" },
+  "masterLegend": { "message": "總開關" },
+  "enableLabel": { "message": "啟用建議" },
+  "backendLegend": { "message": "LLM 後端" },
+  "providerLabel": { "message": "Provider" },
+  "providerAnthropic": { "message": "Anthropic（Claude）" },
+  "providerCompat": { "message": "OpenAI-compatible（Ollama / vLLM / OpenRouter…）" },
+  "anthropicKeyLabel": { "message": "Anthropic API key" },
+  "anthropicKeyHint": { "message": "到 console.anthropic.com 取得。key 只存在這台瀏覽器。" },
+  "modelLabel": { "message": "Model" },
+  "baseUrlLabel": { "message": "Base URL（含 /v1）" },
+  "baseUrlHint": { "message": "儲存時會請求該網域的連線權限。" },
+  "compatKeyLabel": { "message": "API key（本地端點可留空）" },
+  "promptLegend": { "message": "改寫 prompt" },
+  "promptHint": {
+    "message": "每次改寫都會帶上這段 system prompt。想要更學術或更口語的語感，改這裡。"
+  },
+  "triggerLegend": { "message": "觸發條件" },
+  "debounceLabel": { "message": "停頓（毫秒）" },
+  "minCharsLabel": { "message": "最少字元" },
+  "minWordsLabel": { "message": "最少單字" },
+  "blocklistLabel": { "message": "停用網站（hostname，每行一個）" },
+  "saveButton": { "message": "儲存" },
+  "statusSaved": { "message": "已儲存 ✓" },
+  "statusDenied": { "message": "未授權該網域，無法呼叫此端點" },
+  "statusBadUrl": { "message": "Base URL 格式不正確" }
+}

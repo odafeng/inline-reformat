@@ -179,7 +179,10 @@
   function renderCard() {
     if (!host || !active) return;
     cardText.textContent = active.suggestion || '…';
-    cardHint.innerHTML = active.done ? '<kbd>Tab</kbd> 接受 · <kbd>Esc</kbd> 關閉' : '✨ 改寫中…';
+    // Static markup + i18n plain strings only; suggestion text goes through textContent.
+    cardHint.innerHTML = active.done
+      ? `<kbd>Tab</kbd> ${chrome.i18n.getMessage('hintAccept')} · <kbd>Esc</kbd> ${chrome.i18n.getMessage('hintDismiss')}`
+      : chrome.i18n.getMessage('hintRewriting');
     positionCard();
   }
 
