@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <title>Inline Reformat 設定</title>
+    <style>
+      body {
+        font:
+          14px/1.6 system-ui,
+          sans-serif;
+        max-width: 640px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        color: #1f2328;
+      }
+      h1 {
+        font-size: 1.3rem;
+      }
+      fieldset {
+        border: 1px solid #d0d7de;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
+      legend {
+        font-weight: 600;
+        padding: 0 0.4em;
+      }
+      label {
+        display: block;
+        margin: 0.6em 0 0.15em;
+        font-weight: 500;
+      }
+      input[type='text'],
+      input[type='password'],
+      input[type='number'],
+      textarea,
+      select {
+        width: 100%;
+        box-sizing: border-box;
+        font: inherit;
+        padding: 6px 8px;
+        border: 1px solid #d0d7de;
+        border-radius: 6px;
+      }
+      textarea {
+        min-height: 7em;
+      }
+      .row {
+        display: flex;
+        gap: 1rem;
+      }
+      .row > div {
+        flex: 1;
+      }
+      .muted {
+        color: #656d76;
+        font-size: 12px;
+      }
+      button {
+        font: inherit;
+        padding: 8px 20px;
+        border: none;
+        border-radius: 6px;
+        background: #1f883d;
+        color: #fff;
+        cursor: pointer;
+      }
+      #status {
+        margin-left: 0.8em;
+        color: #1a7f37;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #0d1117;
+          color: #e6edf3;
+        }
+        fieldset,
+        input,
+        textarea,
+        select {
+          border-color: #444c56;
+        }
+        input,
+        textarea,
+        select {
+          background: #161b22;
+          color: #e6edf3;
+        }
+        .muted {
+          color: #909dab;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Inline Reformat</h1>
+
+    <fieldset>
+      <legend>總開關</legend>
+      <label><input type="checkbox" id="enabled" /> 啟用建議</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>LLM 後端</legend>
+      <label for="provider">Provider</label>
+      <select id="provider">
+        <option value="anthropic">Anthropic（Claude）</option>
+        <option value="openai-compat">OpenAI-compatible（DGX / OpenRouter…）</option>
+      </select>
+
+      <div id="anthropic-fields">
+        <label for="anthropicApiKey">Anthropic API key</label>
+        <input type="password" id="anthropicApiKey" autocomplete="off" />
+        <label for="anthropicModel">Model</label>
+        <input type="text" id="anthropicModel" placeholder="claude-haiku-4-5" />
+      </div>
+
+      <div id="compat-fields" hidden>
+        <label for="compatBaseUrl">Base URL（含 /v1）</label>
+        <input type="text" id="compatBaseUrl" placeholder="http://dgx.tailnet:11434/v1" />
+        <p class="muted">儲存時會請求該網域的連線權限。</p>
+        <label for="compatApiKey">API key（本地端點可留空）</label>
+        <input type="password" id="compatApiKey" autocomplete="off" />
+        <label for="compatModel">Model</label>
+        <input type="text" id="compatModel" placeholder="例如 llama3.3:70b" />
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>改寫 prompt</legend>
+      <textarea id="systemPrompt"></textarea>
+      <p class="muted">System prompt。想要更學術／更口語的語感，改這裡。</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>觸發條件</legend>
+      <div class="row">
+        <div>
+          <label for="debounceMs">停頓（毫秒）</label>
+          <input type="number" id="debounceMs" min="300" step="100" />
+        </div>
+        <div>
+          <label for="minChars">最少字元</label>
+          <input type="number" id="minChars" min="1" />
+        </div>
+        <div>
+          <label for="minWords">最少單字</label>
+          <input type="number" id="minWords" min="1" />
+        </div>
+      </div>
+      <label for="blocklist">停用網站（hostname，每行一個）</label>
+      <textarea id="blocklist" placeholder="mail.internal-hospital.example"></textarea>
+    </fieldset>
+
+    <button id="save">儲存</button><span id="status"></span>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

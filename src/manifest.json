@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Inline Reformat",
+  "version": "0.1.0",
+  "description": "Pause typing, get a fluent English rewrite in a ghost card, press Tab to accept.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://api.anthropic.com/*"],
+  "optional_host_permissions": ["https://*/*", "http://*/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options.html",
+  "action": { "default_title": "Inline Reformat — 設定在右鍵選單" },
+  "web_accessible_resources": [
+    {
+      "resources": ["lib/*.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

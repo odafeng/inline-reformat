@@ -1,0 +1,22 @@
+{
+  "name": "inline-reformat",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Chrome extension: ghost-suggestion English rewriting while you type",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "smoke": "playwright test",
+    "lint": "eslint src tests",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "vitest": "^2.1.8"
+  }
+}

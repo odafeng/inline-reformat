@@ -1,0 +1,3 @@
+#!/bin/sh
+# lint + unit tests before every commit (smoke test runs in CI)
+npm run lint && npm test
