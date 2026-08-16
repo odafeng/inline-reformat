@@ -17,7 +17,15 @@ export async function* streamAnthropic({ apiKey, model, system, text, signal }) 
       messages: [{ role: 'user', content: text }],
     }),
   });
-  if (!res.ok) throw new Error(`Anthropic API ${res.status}`);
+  if (!res.ok) {
+    let detail = '';
+    try {
+      detail = (await res.json())?.error?.message ?? '';
+    } catch {
+      /* non-JSON body */
+    }
+    throw new Error(`Anthropic API ${res.status}${detail ? `: ${detail}` : ''}`);
+  }
   for await (const data of sseData(res.body, signal)) {
     const delta = anthropicTextDelta(data);
     if (delta) yield delta;

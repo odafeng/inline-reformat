@@ -91,5 +91,8 @@
   },
   "statusTestOk": {
     "message": "端點回應正常 ✓"
+  },
+  "statusKeyMasked": {
+    "message": "這看起來是遮蔽顯示的 key（含「…」）。請用 console 的 Copy 按鈕複製完整的 key。"
   }
 }

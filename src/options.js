@@ -48,6 +48,9 @@ function collectSettings() {
     else if (el.type === 'number') s[key] = Number(el.value) || DEFAULT_SETTINGS[key];
     else s[key] = el.value.trim();
   }
+  // Keys never contain whitespace; kill line breaks smuggled in by copy-paste.
+  s.anthropicApiKey = s.anthropicApiKey.replace(/\s+/g, '');
+  s.compatApiKey = s.compatApiKey.replace(/\s+/g, '');
   s.blocklist = $('blocklist')
     .value.split('\n')
     .map((line) => line.trim())
@@ -81,6 +84,11 @@ async function save() {
 
 async function testConnection() {
   const s = collectSettings();
+  const key = s.provider === 'anthropic' ? s.anthropicApiKey : s.compatApiKey;
+  if (/\u2026|\.\.\./.test(key)) {
+    $('status').textContent = msg('statusKeyMasked');
+    return;
+  }
   const errKey = await ensureOriginPermission(s);
   if (errKey) {
     $('status').textContent = msg(errKey);

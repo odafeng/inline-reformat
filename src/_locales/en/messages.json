@@ -91,5 +91,8 @@
   },
   "statusTestOk": {
     "message": "Endpoint responded ✓"
+  },
+  "statusKeyMasked": {
+    "message": "This looks like the masked key display (it contains \"…\"). Use the Copy button in the console to copy the full key."
   }
 }

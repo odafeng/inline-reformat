@@ -17,7 +17,16 @@ export async function* streamOpenAICompat({ baseUrl, apiKey, model, system, text
       ],
     }),
   });
-  if (!res.ok) throw new Error(`LLM endpoint ${res.status}`);
+  if (!res.ok) {
+    let detail = '';
+    try {
+      const body = await res.json();
+      detail = body?.error?.message ?? body?.message ?? '';
+    } catch {
+      /* non-JSON body */
+    }
+    throw new Error(`LLM endpoint ${res.status}${detail ? `: ${detail}` : ''}`);
+  }
   for await (const data of sseData(res.body, signal)) {
     const delta = openaiTextDelta(data);
     if (delta === null) return;
