@@ -10,7 +10,8 @@
     "smoke": "playwright test",
     "lint": "eslint src tests scripts",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "pack": "mkdir -p dist && rm -f dist/inline-reformat-$npm_package_version.zip && cd src && zip -qr ../dist/inline-reformat-$npm_package_version.zip . -x '**/.DS_Store'"
   },
   "devDependencies": {
     "@playwright/test": "^1.49.0",

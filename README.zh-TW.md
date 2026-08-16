@@ -75,6 +75,10 @@ npm run lint
 
 設計 spec 在 [docs/superpowers/specs/](docs/superpowers/specs/)，兩個關鍵決策在 [docs/adr/](docs/adr/)。Pre-commit hook：`git config core.hooksPath .githooks`。
 
+## 隱私
+
+沒有伺服器、沒有分析、沒有紀錄。被改寫的段落只會送到你設定的端點。細節見 [PRIVACY.md](PRIVACY.md)。
+
 ## 授權
 
 [MIT](LICENSE)

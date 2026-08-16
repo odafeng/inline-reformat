@@ -75,6 +75,10 @@ npm run lint
 
 The design spec lives in [docs/superpowers/specs/](docs/superpowers/specs/), and the two decisions worth reading are in [docs/adr/](docs/adr/). Pre-commit hooks: `git config core.hooksPath .githooks`.
 
+## Privacy
+
+No server, no analytics, no logging. The paragraph being rewritten goes only to the endpoint you configured. Details in [PRIVACY.md](PRIVACY.md).
+
 ## License
 
 [MIT](LICENSE)
