@@ -14,6 +14,7 @@ const FIELDS = [
   'debounceMs',
   'minChars',
   'minWords',
+  'debugLog',
 ];
 
 function localize() {

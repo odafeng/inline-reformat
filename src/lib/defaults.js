@@ -20,6 +20,7 @@ export const DEFAULT_SETTINGS = {
   minChars: 15,
   minWords: 4,
   blocklist: [], // hostnames where the extension stays quiet
+  debugLog: false, // log every trigger decision to the page console
 };
 
 export async function loadSettings() {

@@ -58,6 +58,13 @@ A rewrite request fires only after all of these pass:
 
 Typing again cancels the in-flight request. Errors are silent by design; a broken key or a dead endpoint should never interrupt your writing.
 
+To keep all of this legible:
+
+- The card echoes the original paragraph it is rewriting, and in rich-text editors the paragraph itself gets a subtle outline — you always see exactly what was sent (and only that paragraph is ever sent).
+- If the model thinks your text is already fine, the card flashes a brief ✓ instead of silently not appearing.
+- `Alt+R` forces a rewrite of the paragraph under the caret immediately, skipping every condition above — including the English check, the blocklist, and the master switch. Turn the master switch off and you have a manual-only mode.
+- If a suggestion you expected never came, enable "Log every trigger decision" in Options and the reason shows up in the page's DevTools console.
+
 ## Known limitations
 
 - Google Docs doesn't work. It renders text on a canvas, so no extension of this kind can reach it.

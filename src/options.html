@@ -171,6 +171,16 @@
         Disabled sites (one hostname per line)
       </label>
       <textarea id="blocklist" placeholder="mail.example.com"></textarea>
+      <p class="muted" data-i18n="hotkeyHint">
+        Alt+R rewrites the paragraph under the caret immediately, skipping every condition above —
+        including on disabled sites and with the master switch off.
+      </p>
+      <label
+        ><input type="checkbox" id="debugLog" />
+        <span data-i18n="debugLabel"
+          >Log every trigger decision to the page's DevTools console</span
+        ></label
+      >
     </fieldset>
 
     <button id="save" data-i18n="saveButton">Save</button>

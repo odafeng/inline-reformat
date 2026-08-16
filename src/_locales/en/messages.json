@@ -11,6 +11,9 @@
   "hintRewriting": {
     "message": "✨ Rewriting…"
   },
+  "alreadyFluent": {
+    "message": "Already fluent"
+  },
   "optTitle": {
     "message": "Inline Reformat settings"
   },
@@ -70,6 +73,12 @@
   },
   "blocklistLabel": {
     "message": "Disabled sites (one hostname per line)"
+  },
+  "hotkeyHint": {
+    "message": "Alt+R rewrites the paragraph under the caret immediately, skipping every condition above — including on disabled sites and with the master switch off."
+  },
+  "debugLabel": {
+    "message": "Log every trigger decision to the page's DevTools console"
   },
   "saveButton": {
     "message": "Save"

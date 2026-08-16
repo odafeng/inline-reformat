@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { isMostlyEnglish, wordCount, shouldTrigger } from '../src/lib/guards.js';
+import {
+  isMostlyEnglish,
+  wordCount,
+  shouldTrigger,
+  triggerBlockReason,
+} from '../src/lib/guards.js';
 
 describe('isMostlyEnglish', () => {
   it('accepts plain English', () => {
@@ -68,5 +73,28 @@ describe('shouldTrigger', () => {
   it('ignores surrounding whitespace when comparing against history', () => {
     const state = { ...freshState, lastAccepted: sample };
     expect(shouldTrigger(`  ${sample} `, state, opts)).toBe(false);
+  });
+});
+
+describe('triggerBlockReason', () => {
+  const opts = { minChars: 15, minWords: 4 };
+  const freshState = { lastAccepted: '', lastSuggestedFor: '', dismissedFor: '' };
+  const sample = 'I very appreciate you help for review my paper';
+
+  it('returns null when the block should trigger', () => {
+    expect(triggerBlockReason(sample, freshState, opts)).toBeNull();
+  });
+
+  it('names the guard that blocked the trigger', () => {
+    expect(triggerBlockReason('too short', freshState, opts)).toMatch(/characters/);
+    expect(triggerBlockReason('supercalifragilisticexpialidocious word', freshState, opts)).toMatch(
+      /words/,
+    );
+    expect(triggerBlockReason('please check 這個 report for me today', freshState, opts)).toMatch(
+      /English/,
+    );
+    expect(triggerBlockReason(sample, { ...freshState, dismissedFor: sample }, opts)).toMatch(
+      /dismissed/,
+    );
   });
 });

@@ -11,6 +11,9 @@
   "hintRewriting": {
     "message": "✨ 改寫中…"
   },
+  "alreadyFluent": {
+    "message": "已經很通順"
+  },
   "optTitle": {
     "message": "Inline Reformat 設定"
   },
@@ -70,6 +73,12 @@
   },
   "blocklistLabel": {
     "message": "停用網站（hostname，每行一個）"
+  },
+  "hotkeyHint": {
+    "message": "Alt+R 會立即改寫游標所在的段落，略過上面所有條件——停用網站和總開關關閉時也有效。"
+  },
+  "debugLabel": {
+    "message": "把每次觸發判斷記錄到網頁的 DevTools console（除錯用）"
   },
   "saveButton": {
     "message": "儲存"

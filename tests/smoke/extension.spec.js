@@ -90,6 +90,56 @@ test('type → ghost card → Tab accepts the rewrite', async () => {
   }
 });
 
+test('Alt+R forces a rewrite when guards would block the auto trigger', async () => {
+  const server = await startMockServer();
+  const port = server.address().port;
+  const context = await launchWithExtension(port);
+  try {
+    const page = await context.newPage();
+    await page.goto(`http://127.0.0.1:${port}/`);
+
+    const textarea = page.locator('#ta');
+    await textarea.click();
+    // Mixed CJK never auto-triggers (isMostlyEnglish guard).
+    await textarea.pressSequentially('請 review my paper');
+    await page.waitForTimeout(600); // well past the 200 ms debounce
+    const card = page.locator('[data-inline-reformat]');
+    await expect(card).toBeHidden();
+
+    await page.keyboard.press('Alt+KeyR');
+    await expect(card).toBeVisible({ timeout: 10_000 });
+    await expect(card.locator('.text')).toHaveText(SUGGESTION, { timeout: 10_000 });
+  } finally {
+    await context.close();
+    server.close();
+  }
+});
+
+test('identical suggestion flashes "already fluent" then hides', async () => {
+  const server = await startMockServer();
+  const port = server.address().port;
+  const context = await launchWithExtension(port);
+  try {
+    const page = await context.newPage();
+    await page.goto(`http://127.0.0.1:${port}/`);
+
+    const textarea = page.locator('#ta');
+    await textarea.click();
+    // The mock always returns SUGGESTION; typing it verbatim makes the
+    // rewrite a no-op, which must surface as a ✓ flash, not silence.
+    await textarea.pressSequentially(SUGGESTION);
+
+    // The ✓ prefix is locale-independent (the label itself is localized).
+    const card = page.locator('[data-inline-reformat]');
+    await expect(card.locator('.text')).toContainText('✓', { timeout: 10_000 });
+    await expect(card).toBeHidden({ timeout: 4_000 });
+    await expect(textarea).toHaveValue(SUGGESTION); // field untouched
+  } finally {
+    await context.close();
+    server.close();
+  }
+});
+
 test('field focused before injection (autofocus) still triggers', async () => {
   const server = await startMockServer();
   const port = server.address().port;
