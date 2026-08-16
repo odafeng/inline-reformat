@@ -8,6 +8,11 @@ export async function* streamAnthropic({ apiKey, model, system, text, signal }) 
       'content-type': 'application/json',
       'x-api-key': apiKey,
       'anthropic-version': '2023-06-01',
+      // Requests from an extension carry Origin: chrome-extension://…, and the
+      // API rejects browser-origin calls unless this opt-in is present. It is
+      // the documented switch for BYOK browser apps: the "danger" is exposing
+      // a key in a web page, not a user calling the API with their own key.
+      'anthropic-dangerous-direct-browser-access': 'true',
     },
     body: JSON.stringify({
       model,
