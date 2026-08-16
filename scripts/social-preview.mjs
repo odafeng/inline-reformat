@@ -46,7 +46,7 @@ const HTML = `<!doctype html>
 <body>
   <div class="left">
     <h1>Inline Reformat</h1>
-    <div class="tag">Pause typing, get a <b>fluent English rewrite</b> in a ghost card. Press <b>Tab</b> to accept.</div>
+    <div class="tag">Press <b>Alt+R</b>, get a <b>fluent English rewrite</b> in a ghost card. Press <b>Tab</b> to accept.</div>
     <div class="byok">Bring your own key · no server, no account · <span>Claude or your local LLM</span></div>
   </div>
   <div class="right">

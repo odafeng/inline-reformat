@@ -14,7 +14,7 @@ Web Store 過審拿到連結後再打 Show HN 和 Reddit，一次把流量導到
 **Title（≤80 字元）**
 
 ```
-Show HN: A BYOK Chrome extension that rewrites my English as I type
+Show HN: A BYOK Chrome extension that rewrites my English where I type
 ```
 
 **內文**
@@ -25,10 +25,12 @@ day ends in it anyway: papers, peer reviews, emails to editors. My loop used to 
 copy the sentence into a chatbot, ask for a rewrite, paste it back. Dozens of times
 a day.
 
-So I built a Chrome extension that removes the loop. When I pause typing for 1.5
-seconds, the paragraph under my caret is sent to an LLM and the rewrite streams
-into a small card under the input box. Tab accepts it in place, Esc dismisses it,
-and typing again makes it go away. No selection, no context menu.
+So I built a Chrome extension that removes the loop. I press Alt+R, the paragraph
+under my caret is sent to an LLM, and the rewrite streams into a small card under
+the input box. Tab accepts it in place, Esc dismisses it, and typing again makes
+it go away. No selection, no context menu. (There's an opt-in mode that triggers
+automatically after a typing pause; the default is manual — one keystroke, one
+API call, nothing sent while you just type.)
 
 Two design decisions I'd defend:
 
@@ -54,7 +56,7 @@ Repo: https://github.com/odafeng/inline-reformat
 **Title**
 
 ```
-I built a Chrome extension that rewrites my English as I type, and it runs entirely against my local Ollama
+I built a Chrome extension that rewrites my English in place, and it runs entirely against my local Ollama
 ```
 
 **內文**
@@ -62,8 +64,8 @@ I built a Chrome extension that rewrites my English as I type, and it runs entir
 ```
 Non-native English speaker here. I write papers and emails in English all day and
 got tired of the copy-to-chatbot-paste-back loop, so I made a browser extension:
-pause typing for 1.5 s, the current paragraph gets rewritten, the result streams
-into a card under the input box, Tab accepts it in place.
+hit Alt+R, the paragraph you're typing gets rewritten, the result streams into a
+card under the input box, Tab accepts it in place.
 
 The part this sub might care about: it talks to any OpenAI-compatible endpoint.
 Point the base URL at Ollama/vLLM/LM Studio and everything stays on your machine.
@@ -84,7 +86,7 @@ MIT licensed: https://github.com/odafeng/inline-reformat
 The copy-into-ChatGPT-paste-back loop was eating my life, so I built a Chrome
 extension that removes it.
 
-Pause typing → rewrite streams into a card → Tab to accept. [附 demo.gif]
+Alt+R → rewrite streams into a card → Tab to accept. [附 demo.gif]
 
 2/ Design choice I care about: it never auto-replaces. An LLM rewrite can flip a
 negation, and a non-native speaker is exactly who won't catch it. Every change
@@ -102,9 +104,10 @@ https://github.com/odafeng/inline-reformat
 身為每天要用英文寫論文、回 reviewer、跟編輯通信的外科醫師，我以前的日常是：
 把句子複製到 ChatGPT、請它改通順、再貼回去。一天幾十次。
 
-所以我寫了一個 Chrome 擴充功能：打字停頓 1.5 秒，游標所在的段落自動改寫，
+所以我寫了一個 Chrome 擴充功能：按 Alt+R，游標所在的段落交給 LLM 改寫，
 結果串流顯示在輸入框下方的小卡片，按 Tab 原地取代，Esc 關掉，繼續打字它就消失。
-不用反白、不用右鍵。
+不用反白、不用右鍵。（也有打字停頓就自動建議的模式，預設關閉——按一次、算一次，
+不按就不花錢。）
 
 幾個堅持：
 ・不自動取代。LLM 偶爾會改到語意，母語不是英文的人恰好最難發現，所以每個

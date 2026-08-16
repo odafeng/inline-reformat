@@ -1,4 +1,4 @@
-// Records the type → ghost card → Tab flow and converts it to docs/assets/demo.gif.
+// Records the type → Alt+R → ghost card → Tab flow and converts it to docs/assets/demo.gif.
 // Usage: node scripts/demo-gif.mjs   (requires ffmpeg)
 
 import { chromium } from '@playwright/test';
@@ -13,6 +13,36 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const EXT_PATH = path.join(ROOT, 'src');
 const OUT = path.join(ROOT, 'docs/assets/demo.gif');
+
+// Needs a full ffmpeg build (Playwright's bundled copy has no GIF muxer).
+// Checks winget's link dir too, so a fresh `winget install Gyan.FFmpeg`
+// works without restarting the shell.
+function findFfmpeg() {
+  const candidates = ['ffmpeg'];
+  if (process.platform === 'win32' && process.env.LOCALAPPDATA) {
+    candidates.push(path.join(process.env.LOCALAPPDATA, 'Microsoft/WinGet/Links/ffmpeg.exe'));
+    const pkgs = path.join(process.env.LOCALAPPDATA, 'Microsoft/WinGet/Packages');
+    try {
+      for (const dir of fs.readdirSync(pkgs)) {
+        if (!dir.startsWith('Gyan.FFmpeg')) continue;
+        for (const build of fs.readdirSync(path.join(pkgs, dir))) {
+          candidates.push(path.join(pkgs, dir, build, 'bin/ffmpeg.exe'));
+        }
+      }
+    } catch {
+      /* no winget packages dir */
+    }
+  }
+  for (const cmd of candidates) {
+    try {
+      execFileSync(cmd, ['-version'], { stdio: 'ignore' });
+      return cmd;
+    } catch {
+      /* try next */
+    }
+  }
+  throw new Error('ffmpeg not found — install it (e.g. winget install Gyan.FFmpeg) and retry');
+}
 const SUGGESTION =
   'I really appreciate your help in reviewing my paper. Could we discuss the statistics section when you have time?';
 
@@ -25,12 +55,17 @@ const PAGE_HTML = `<!doctype html>
   .compose h2 { margin: 0 0 12px; font-size: 15px; color: #444; font-weight: 600; }
   textarea { width: 100%; box-sizing: border-box; border: 1px solid #d8dee4; border-radius: 8px;
              font: inherit; padding: 12px; min-height: 120px; resize: none; outline: none; }
+  .key { position: fixed; right: 20px; bottom: 20px; font: 600 14px/1 system-ui, sans-serif;
+         background: #1f2328; color: #fff; padding: 10px 16px; border-radius: 8px;
+         box-shadow: 0 3px 12px rgba(0,0,0,.3); opacity: 0; transition: opacity .15s; }
+  .key.show { opacity: 1; }
 </style></head>
 <body>
   <div class="compose">
     <h2>New message</h2>
     <textarea id="ta" spellcheck="false"></textarea>
   </div>
+  <div class="key" id="key"></div>
 </body></html>`;
 
 const server = http.createServer((req, res) => {
@@ -81,16 +116,25 @@ try {
 
   let [sw] = context.serviceWorkers();
   if (!sw) sw = await context.waitForEvent('serviceworker');
+  // Deliberately no autoTrigger: the recording demonstrates the shipped
+  // manual-only default, so guards and debounce settings are irrelevant.
   await sw.evaluate((s) => chrome.storage.local.set(s), {
     provider: 'openai-compat',
     compatBaseUrl: `http://127.0.0.1:${port}/v1`,
     compatModel: 'mock',
-    debounceMs: 700,
-    minChars: 5,
-    minWords: 2,
   });
 
   const page = await context.newPage();
+  // On-screen key hint, so viewers see which key drives each step.
+  const showKey = (label) =>
+    page.evaluate((l) => {
+      const k = document.getElementById('key');
+      k.textContent = l;
+      k.classList.add('show');
+    }, label);
+  const hideKey = () =>
+    page.evaluate(() => document.getElementById('key').classList.remove('show'));
+
   await page.goto(`http://127.0.0.1:${port}/`);
   await page.waitForTimeout(600);
   await page.locator('#ta').click();
@@ -99,15 +143,30 @@ try {
     .pressSequentially('Dear Prof. Chen, I very appreciate you help for review my paper.', {
       delay: 42,
     });
+  await page.waitForTimeout(500);
+  await showKey('Alt + R');
+  await page.keyboard.press('Alt+KeyR');
+  await page.waitForTimeout(800);
+  await hideKey();
   await page.locator('[data-inline-reformat] .hint').filter({ hasText: 'Tab' }).waitFor();
   await page.waitForTimeout(900);
+  await showKey('Tab');
   await page.keyboard.press('Tab');
-  await page.waitForTimeout(1600);
+  await page.waitForTimeout(800);
+  await hideKey();
+  await page.waitForTimeout(900);
 
   await context.close(); // flushes the video
-  const webm = fs.readdirSync(videoDir).find((f) => f.endsWith('.webm'));
+  // The persistent context also records its initial blank page — take the
+  // largest recording, which is the demo page.
+  const webm = fs
+    .readdirSync(videoDir)
+    .filter((f) => f.endsWith('.webm'))
+    .sort(
+      (a, b) => fs.statSync(path.join(videoDir, b)).size - fs.statSync(path.join(videoDir, a)).size,
+    )[0];
   const webmPath = path.join(videoDir, webm);
-  execFileSync('ffmpeg', [
+  execFileSync(findFfmpeg(), [
     '-y',
     '-i',
     webmPath,
