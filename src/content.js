@@ -277,4 +277,8 @@
 
   window.addEventListener('scroll', () => positionCard(), { passive: true });
   window.addEventListener('resize', () => positionCard(), { passive: true });
+
+  // A field focused before this script ran (autofocus, or the user clicked
+  // during page load) never fires focusin for us — pick it up directly.
+  field = editableFrom(document.activeElement) ?? field;
 })();

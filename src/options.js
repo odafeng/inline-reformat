@@ -1,6 +1,7 @@
 import { DEFAULT_SETTINGS, loadSettings } from './lib/defaults.js';
 
 const $ = (id) => document.getElementById(id);
+const msg = (key) => chrome.i18n.getMessage(key);
 const FIELDS = [
   'enabled',
   'provider',
@@ -17,8 +18,8 @@ const FIELDS = [
 
 function localize() {
   for (const el of document.querySelectorAll('[data-i18n]')) {
-    const msg = chrome.i18n.getMessage(el.dataset.i18n);
-    if (msg) el.textContent = msg;
+    const text = msg(el.dataset.i18n);
+    if (text) el.textContent = text;
   }
 }
 
@@ -39,7 +40,7 @@ async function restore() {
   syncProviderVisibility();
 }
 
-async function save() {
+function collectSettings() {
   const s = {};
   for (const key of FIELDS) {
     const el = $(key);
@@ -51,27 +52,51 @@ async function save() {
     .value.split('\n')
     .map((line) => line.trim())
     .filter(Boolean);
+  return s;
+}
 
-  if (s.provider === 'openai-compat' && s.compatBaseUrl) {
-    try {
-      const origin = new URL(s.compatBaseUrl).origin + '/*';
-      const granted = await chrome.permissions.request({ origins: [origin] });
-      if (!granted) {
-        $('status').textContent = chrome.i18n.getMessage('statusDenied');
-        return;
-      }
-    } catch {
-      $('status').textContent = chrome.i18n.getMessage('statusBadUrl');
-      return;
-    }
+// Returns null when OK, or an i18n key describing why the endpoint is unusable.
+async function ensureOriginPermission(s) {
+  if (s.provider !== 'openai-compat' || !s.compatBaseUrl) return null;
+  try {
+    const origin = new URL(s.compatBaseUrl).origin + '/*';
+    const granted = await chrome.permissions.request({ origins: [origin] });
+    return granted ? null : 'statusDenied';
+  } catch {
+    return 'statusBadUrl';
   }
+}
 
+async function save() {
+  const s = collectSettings();
+  const errKey = await ensureOriginPermission(s);
+  if (errKey) {
+    $('status').textContent = msg(errKey);
+    return;
+  }
   await chrome.storage.local.set(s);
-  $('status').textContent = chrome.i18n.getMessage('statusSaved');
+  $('status').textContent = msg('statusSaved');
   setTimeout(() => ($('status').textContent = ''), 2000);
+}
+
+async function testConnection() {
+  const s = collectSettings();
+  const errKey = await ensureOriginPermission(s);
+  if (errKey) {
+    $('status').textContent = msg(errKey);
+    return;
+  }
+  $('status').textContent = msg('statusTesting');
+  try {
+    const res = await chrome.runtime.sendMessage({ type: 'test', settings: s });
+    $('status').textContent = res?.ok ? msg('statusTestOk') : `✗ ${res?.error || 'no response'}`;
+  } catch (err) {
+    $('status').textContent = `✗ ${err?.message || err}`;
+  }
 }
 
 localize();
 $('provider').addEventListener('change', syncProviderVisibility);
 $('save').addEventListener('click', save);
+$('test').addEventListener('click', testConnection);
 restore();

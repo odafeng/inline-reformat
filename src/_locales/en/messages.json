@@ -2,35 +2,94 @@
   "extDesc": {
     "message": "Pause typing, get a fluent English rewrite in a ghost card, press Tab to accept. Bring your own API key."
   },
-  "hintAccept": { "message": "accept" },
-  "hintDismiss": { "message": "dismiss" },
-  "hintRewriting": { "message": "✨ Rewriting…" },
-  "optTitle": { "message": "Inline Reformat settings" },
-  "masterLegend": { "message": "Master switch" },
-  "enableLabel": { "message": "Enable suggestions" },
-  "backendLegend": { "message": "LLM backend" },
-  "providerLabel": { "message": "Provider" },
-  "providerAnthropic": { "message": "Anthropic (Claude)" },
-  "providerCompat": { "message": "OpenAI-compatible (Ollama / vLLM / OpenRouter…)" },
-  "anthropicKeyLabel": { "message": "Anthropic API key" },
+  "hintAccept": {
+    "message": "accept"
+  },
+  "hintDismiss": {
+    "message": "dismiss"
+  },
+  "hintRewriting": {
+    "message": "✨ Rewriting…"
+  },
+  "optTitle": {
+    "message": "Inline Reformat settings"
+  },
+  "masterLegend": {
+    "message": "Master switch"
+  },
+  "enableLabel": {
+    "message": "Enable suggestions"
+  },
+  "backendLegend": {
+    "message": "LLM backend"
+  },
+  "providerLabel": {
+    "message": "Provider"
+  },
+  "providerAnthropic": {
+    "message": "Anthropic (Claude)"
+  },
+  "providerCompat": {
+    "message": "OpenAI-compatible (Ollama / vLLM / OpenRouter…)"
+  },
+  "anthropicKeyLabel": {
+    "message": "Anthropic API key"
+  },
   "anthropicKeyHint": {
     "message": "Get one at console.anthropic.com. The key is stored only in this browser."
   },
-  "modelLabel": { "message": "Model" },
-  "baseUrlLabel": { "message": "Base URL (including /v1)" },
-  "baseUrlHint": { "message": "Saving will ask for permission to connect to this origin." },
-  "compatKeyLabel": { "message": "API key (leave empty for local endpoints)" },
-  "promptLegend": { "message": "Rewrite prompt" },
+  "modelLabel": {
+    "message": "Model"
+  },
+  "baseUrlLabel": {
+    "message": "Base URL (including /v1)"
+  },
+  "baseUrlHint": {
+    "message": "Saving will ask for permission to connect to this origin."
+  },
+  "compatKeyLabel": {
+    "message": "API key (leave empty for local endpoints)"
+  },
+  "promptLegend": {
+    "message": "Rewrite prompt"
+  },
   "promptHint": {
     "message": "This is the system prompt sent with every rewrite. Edit it to shift the tone — more academic, more casual, whatever you need."
   },
-  "triggerLegend": { "message": "Trigger" },
-  "debounceLabel": { "message": "Pause (ms)" },
-  "minCharsLabel": { "message": "Min characters" },
-  "minWordsLabel": { "message": "Min words" },
-  "blocklistLabel": { "message": "Disabled sites (one hostname per line)" },
-  "saveButton": { "message": "Save" },
-  "statusSaved": { "message": "Saved ✓" },
-  "statusDenied": { "message": "Permission not granted; this endpoint cannot be reached" },
-  "statusBadUrl": { "message": "Base URL is not a valid URL" }
+  "triggerLegend": {
+    "message": "Trigger"
+  },
+  "debounceLabel": {
+    "message": "Pause (ms)"
+  },
+  "minCharsLabel": {
+    "message": "Min characters"
+  },
+  "minWordsLabel": {
+    "message": "Min words"
+  },
+  "blocklistLabel": {
+    "message": "Disabled sites (one hostname per line)"
+  },
+  "saveButton": {
+    "message": "Save"
+  },
+  "statusSaved": {
+    "message": "Saved ✓"
+  },
+  "statusDenied": {
+    "message": "Permission not granted; this endpoint cannot be reached"
+  },
+  "statusBadUrl": {
+    "message": "Base URL is not a valid URL"
+  },
+  "testButton": {
+    "message": "Test connection"
+  },
+  "statusTesting": {
+    "message": "Testing…"
+  },
+  "statusTestOk": {
+    "message": "Endpoint responded ✓"
+  }
 }

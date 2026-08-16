@@ -25,6 +25,32 @@ function pickStream(settings, text, signal) {
   });
 }
 
+// Options page "test connection": run one tiny rewrite with the given
+// (possibly unsaved) settings and report success or the raw error.
+chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  if (msg.type !== 'test') return;
+  (async () => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+    try {
+      const settings = { ...(await loadSettings()), ...msg.settings };
+      let got = '';
+      const prompt = 'Reply with the single word OK.';
+      for await (const chunk of pickStream(settings, prompt, controller.signal)) {
+        got += chunk;
+        if (got.trim()) break;
+      }
+      controller.abort();
+      sendResponse(got.trim() ? { ok: true } : { ok: false, error: 'empty response' });
+    } catch (err) {
+      sendResponse({ ok: false, error: String(err?.message || err) });
+    } finally {
+      clearTimeout(timer);
+    }
+  })();
+  return true; // keep the message channel open for the async response
+});
+
 chrome.runtime.onConnect.addListener((port) => {
   if (port.name !== 'rewrite') return;
   let controller = null;

@@ -69,6 +69,10 @@
         margin-left: 0.8em;
         color: #1a7f37;
       }
+      button.secondary {
+        background: #6e7781;
+        margin-left: 0.5em;
+      }
       @media (prefers-color-scheme: dark) {
         body {
           background: #0d1117;
@@ -169,7 +173,9 @@
       <textarea id="blocklist" placeholder="mail.example.com"></textarea>
     </fieldset>
 
-    <button id="save" data-i18n="saveButton">Save</button><span id="status"></span>
+    <button id="save" data-i18n="saveButton">Save</button>
+    <button id="test" class="secondary" data-i18n="testButton">Test connection</button>
+    <span id="status"></span>
     <script type="module" src="options.js"></script>
   </body>
 </html>
