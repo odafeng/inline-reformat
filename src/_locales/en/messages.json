@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "Pause typing, get a fluent English rewrite in a ghost card, press Tab to accept. Bring your own API key."
+    "message": "Press Alt+R to get a fluent English rewrite in a ghost card, press Tab to accept. Bring your own API key."
   },
   "hintAccept": {
     "message": "accept"
@@ -61,6 +61,12 @@
   },
   "triggerLegend": {
     "message": "Trigger"
+  },
+  "manualHint": {
+    "message": "By default nothing is sent automatically: press Alt+R to rewrite the paragraph under the caret. Each rewrite is one API call."
+  },
+  "autoTriggerLabel": {
+    "message": "Also suggest automatically after a typing pause (costs an API call per pause)"
   },
   "debounceLabel": {
     "message": "Pause (ms)"

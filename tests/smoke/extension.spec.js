@@ -45,7 +45,7 @@ function startMockServer() {
   });
 }
 
-async function launchWithExtension(port) {
+async function launchWithExtension(port, overrides = {}) {
   const context = await chromium.launchPersistentContext('', {
     channel: 'chromium',
     headless: true,
@@ -57,9 +57,11 @@ async function launchWithExtension(port) {
     provider: 'openai-compat',
     compatBaseUrl: `http://127.0.0.1:${port}/v1`,
     compatModel: 'mock',
+    autoTrigger: true, // most tests exercise the typing-pause path; default is manual-only
     debounceMs: 200,
     minChars: 5,
     minWords: 2,
+    ...overrides,
   });
   return context;
 }
@@ -90,18 +92,18 @@ test('type → ghost card → Tab accepts the rewrite', async () => {
   }
 });
 
-test('Alt+R forces a rewrite when guards would block the auto trigger', async () => {
+test('default is manual-only: no auto trigger, Alt+R rewrites', async () => {
   const server = await startMockServer();
   const port = server.address().port;
-  const context = await launchWithExtension(port);
+  const context = await launchWithExtension(port, { autoTrigger: false }); // the shipped default
   try {
     const page = await context.newPage();
     await page.goto(`http://127.0.0.1:${port}/`);
 
     const textarea = page.locator('#ta');
     await textarea.click();
-    // Mixed CJK never auto-triggers (isMostlyEnglish guard).
-    await textarea.pressSequentially('請 review my paper');
+    // Would pass every guard — but with auto-trigger off, nothing may be sent.
+    await textarea.pressSequentially(ROUGH);
     await page.waitForTimeout(600); // well past the 200 ms debounce
     const card = page.locator('[data-inline-reformat]');
     await expect(card).toBeHidden();

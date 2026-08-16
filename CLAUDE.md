@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A Chrome extension (Manifest V3, bring-your-own-key) that rewrites the paragraph being typed into fluent English, shown as a ghost-suggestion card below the field. Tab accepts, Esc dismisses. No server: requests go straight from the browser to the user-configured LLM endpoint.
+A Chrome extension (Manifest V3, bring-your-own-key) that rewrites the paragraph being typed into fluent English, shown as a ghost-suggestion card below the field. Alt+R triggers a rewrite (auto-trigger on typing pause is opt-in via the `autoTrigger` setting, off by default — every trigger costs an API call). Tab accepts, Esc dismisses. No server: requests go straight from the browser to the user-configured LLM endpoint.
 
 ## Commands
 
@@ -23,7 +23,7 @@ CI (`.github/workflows/ci.yml`) runs lint, format:check, unit tests, then smoke.
 
 Three Chrome contexts, sharing settings through `chrome.storage.local` (shape defined once in `src/lib/defaults.js`):
 
-- `src/content.js` — classic (non-ESM) content script injected on all pages. Tracks the focused editable (input/textarea/contenteditable), debounces typing pauses, extracts the paragraph under the caret, applies trigger guards, and renders the ghost card inside a shadow DOM. It dynamic-imports shared code from `src/lib/` via `chrome.runtime.getURL` — this is why `lib/*.js` is listed in `web_accessible_resources`.
+- `src/content.js` — classic (non-ESM) content script injected on all pages. Tracks the focused editable (input/textarea/contenteditable), listens for Alt+R (and debounces typing pauses when `autoTrigger` is on), extracts the paragraph under the caret, applies trigger guards, and renders the ghost card inside a shadow DOM. It dynamic-imports shared code from `src/lib/` via `chrome.runtime.getURL` — this is why `lib/*.js` is listed in `web_accessible_resources`.
 - `src/background.js` — MV3 service worker that owns **all network calls** (host_permissions bypass CORS there, so LLM requests must never move into the content script). Content scripts connect on the `'rewrite'` port: send `{ id, text }`, receive streamed `{ type: 'chunk'|'done'|'error', id }`. A new message on the same port aborts the in-flight request. A separate one-shot `{ type: 'test' }` runtime message serves the options page's "test connection".
 - `src/options.js` / `options.html` — settings UI.
 

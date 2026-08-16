@@ -11,6 +11,7 @@ const FIELDS = [
   'compatApiKey',
   'compatModel',
   'systemPrompt',
+  'autoTrigger',
   'debounceMs',
   'minChars',
   'minWords',
@@ -30,6 +31,10 @@ function syncProviderVisibility() {
   $('compat-fields').hidden = !compat;
 }
 
+function syncAutoVisibility() {
+  $('auto-fields').hidden = !$('autoTrigger').checked;
+}
+
 async function restore() {
   const s = await loadSettings();
   for (const key of FIELDS) {
@@ -39,6 +44,7 @@ async function restore() {
   }
   $('blocklist').value = s.blocklist.join('\n');
   syncProviderVisibility();
+  syncAutoVisibility();
 }
 
 function collectSettings() {
@@ -106,6 +112,7 @@ async function testConnection() {
 
 localize();
 $('provider').addEventListener('change', syncProviderVisibility);
+$('autoTrigger').addEventListener('change', syncAutoVisibility);
 $('save').addEventListener('click', save);
 $('test').addEventListener('click', testConnection);
 restore();

@@ -1,7 +1,7 @@
 // Content script (classic, not ESM — shared logic is dynamic-imported below).
-// Watches the focused editable, debounces typing pauses, asks the service
-// worker for a rewrite, streams it into a ghost card, and replaces the
-// paragraph in place on Tab.
+// Watches the focused editable, waits for Alt+R (or a typing pause when the
+// opt-in auto-trigger is on), asks the service worker for a rewrite, streams
+// it into a ghost card, and replaces the paragraph in place on Tab.
 
 (async () => {
   const [{ extractBlock }, { triggerBlockReason }, { DEFAULT_SETTINGS }] = await Promise.all([
@@ -104,6 +104,7 @@
     if (!field || composing) return;
     if (!force) {
       if (!settings.enabled) return dbg('no trigger: suggestions disabled in options');
+      if (!settings.autoTrigger) return dbg('no trigger: auto-trigger is off — press Alt+R');
       if (settings.blocklist.includes(location.hostname))
         return dbg('no trigger: site is blocklisted');
     }

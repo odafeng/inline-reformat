@@ -26,7 +26,7 @@ https://chrome.google.com/webstore/devconsole → 用你的 Google 帳號登入 
 ### Description（貼這段）
 
 ```
-Pause typing for a moment and the sentence you just wrote comes back as fluent English, in a small card under the input box. Press Tab to accept it, Esc to dismiss, or just keep typing and it disappears. No text selection, no right-click menu, no leaving the field.
+Press Alt+R and the paragraph you are typing comes back as fluent English, in a small card under the input box. Press Tab to accept it, Esc to dismiss, or just keep typing and it disappears. No text selection, no right-click menu, no leaving the field.
 
 Built for people who write English as a second language all day (emails, papers, code review comments) and are tired of the copy-into-ChatGPT-paste-back loop.
 
@@ -45,7 +45,7 @@ An LLM rewrite occasionally shifts meaning, and if English is not your first lan
 
 WHEN IT TRIGGERS
 
-Only after a configurable pause, only on mostly-English paragraphs of reasonable length, never during IME composition, never on sites you blocklist, and never twice for the same text. Typing again cancels the request. Errors are silent; a dead endpoint never interrupts your writing.
+By default, only when you press Alt+R — one keystroke, one API call, nothing sent while you just type. Prefer automatic suggestions? Turn on the optional auto-trigger in Options: then a rewrite fires after a configurable pause, only on mostly-English paragraphs of reasonable length, never during IME composition, never on sites you blocklist, and never twice for the same text. Typing again cancels the request. Errors are silent; a dead endpoint never interrupts your writing.
 
 The rewrite prompt is fully editable in Options. Want warmer emails or more formal manuscripts? Say so there.
 

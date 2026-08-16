@@ -1,6 +1,6 @@
 {
   "extDesc": {
-    "message": "打字停頓後，把剛打的英文改寫成通順版本顯示在輸入框下方，按 Tab 接受。自備 API key。"
+    "message": "按 Alt+R 把剛打的英文改寫成通順版本顯示在輸入框下方，按 Tab 接受。自備 API key。"
   },
   "hintAccept": {
     "message": "接受"
@@ -61,6 +61,12 @@
   },
   "triggerLegend": {
     "message": "觸發條件"
+  },
+  "manualHint": {
+    "message": "預設不會自動送出任何內容：按 Alt+R 才會改寫游標所在的段落。每次改寫都是一次 API 呼叫。"
+  },
+  "autoTriggerLabel": {
+    "message": "打字停頓後也自動建議（每次停頓都會多一次 API 呼叫）"
   },
   "debounceLabel": {
     "message": "停頓（毫秒）"

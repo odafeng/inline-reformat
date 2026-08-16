@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/odafeng/inline-reformat/actions/workflows/ci.yml/badge.svg)](https://github.com/odafeng/inline-reformat/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-1f883d.svg)](LICENSE)
 
-Pause typing for a second and a half, and the sentence you just wrote comes back as fluent English in a small card under the input box. Press `Tab` to accept it, `Esc` to dismiss, or just keep typing and it gets out of your way. No text selection, no right-click menu, no leaving the field.
+Press `Alt+R`, and the paragraph you are typing comes back as fluent English in a small card under the input box. Press `Tab` to accept it, `Esc` to dismiss, or just keep typing and it gets out of your way. No text selection, no right-click menu, no leaving the field. (Prefer suggestions to appear on their own after a typing pause? That mode is one checkbox away in Options.)
 
 [繁體中文說明](README.zh-TW.md)
 
@@ -49,7 +49,9 @@ The system prompt is editable in Options and applies immediately. The default as
 
 ## When it triggers, and when it deliberately doesn't
 
-A rewrite request fires only after all of these pass:
+By default, only when you ask: `Alt+R` rewrites the paragraph under the caret. One keystroke, one API call — nothing is ever sent while you just type.
+
+If you enable the optional auto-trigger in Options, a request also fires after a typing pause — but only after all of these pass:
 
 - you stopped typing for 1.5 s (configurable)
 - the paragraph under your caret is at least 15 characters and 4 words
@@ -64,7 +66,7 @@ To keep all of this legible:
 
 - The card echoes the original paragraph it is rewriting, and in rich-text editors the paragraph itself gets a subtle outline — you always see exactly what was sent (and only that paragraph is ever sent).
 - If the model thinks your text is already fine, the card flashes a brief ✓ instead of silently not appearing.
-- `Alt+R` forces a rewrite of the paragraph under the caret immediately, skipping every condition above — including the English check, the blocklist, and the master switch. Turn the master switch off and you have a manual-only mode.
+- `Alt+R` always works: it skips every condition above — including the English check, the blocklist, and the master switch.
 - If a suggestion you expected never came, enable "Log every trigger decision" in Options and the reason shows up in the page's DevTools console.
 
 ## Known limitations

@@ -6,14 +6,14 @@ Inline Reformat is a bring-your-own-key browser extension. It has no server of i
 
 ## What data the extension processes
 
-When you pause typing in a text field, the extension takes **the single paragraph under your caret** and sends it to the LLM endpoint **you configured** in the options page. That is the only data that ever leaves your browser, and it goes only to that one endpoint:
+When you press Alt+R in a text field (or when you pause typing, if you enabled the optional auto-trigger in the options page — it is off by default), the extension takes **the single paragraph under your caret** and sends it to the LLM endpoint **you configured** in the options page. That is the only data that ever leaves your browser, and it goes only to that one endpoint:
 
 - Anthropic (`api.anthropic.com`), if you configured an Anthropic API key, or
 - the OpenAI-compatible base URL you entered yourself (for example a local Ollama server or OpenRouter).
 
 The endpoint provider processes that text under **its own** privacy policy and terms. You choose the provider; the extension never picks one for you. If you point it at a model running on your own machine, your text never leaves your machine.
 
-Non-English text, text shorter than your configured minimum, and text on sites you blocklisted are never sent anywhere.
+With the auto-trigger enabled, non-English text, text shorter than your configured minimum, and text on sites you blocklisted are still never sent automatically.
 
 ## What is stored, and where
 
@@ -40,4 +40,4 @@ The complete source code is at <https://github.com/odafeng/inline-reformat>. For
 
 ## 中文摘要
 
-這個擴充功能沒有自己的伺服器、不用註冊、沒有任何遙測。你停止打字時，游標所在的那一段文字會送到**你自己設定**的 LLM 端點（Anthropic 或你填的 OpenAI-compatible URL），除此之外沒有任何資料離開瀏覽器。API key 與設定只存在本機的 `chrome.storage.local`，不會同步或外傳。接本地模型時，文字完全不出你的機器。原始碼全部公開，可自行查核。
+這個擴充功能沒有自己的伺服器、不用註冊、沒有任何遙測。你按下 Alt+R 時（或啟用選項頁的自動觸發後停止打字時；預設關閉），游標所在的那一段文字會送到**你自己設定**的 LLM 端點（Anthropic 或你填的 OpenAI-compatible URL），除此之外沒有任何資料離開瀏覽器。API key 與設定只存在本機的 `chrome.storage.local`，不會同步或外傳。接本地模型時，文字完全不出你的機器。原始碼全部公開，可自行查核。

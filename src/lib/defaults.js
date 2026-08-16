@@ -16,6 +16,7 @@ export const DEFAULT_SETTINGS = {
     'If the text is already fluent, return it unchanged.',
     'Output only the rewritten text, with no quotes, preamble, or explanation.',
   ].join(' '),
+  autoTrigger: false, // off: rewrites happen only on Alt+R (each trigger costs an API call)
   debounceMs: 1500,
   minChars: 15,
   minWords: 4,
