@@ -82,6 +82,7 @@ try {
     provider: 'openai-compat',
     compatBaseUrl: `http://127.0.0.1:${port}/v1`,
     compatModel: 'mock',
+    autoTrigger: true, // opt-in: only so the recording can show the card
     debounceMs: 200,
     minChars: 5,
     minWords: 2,

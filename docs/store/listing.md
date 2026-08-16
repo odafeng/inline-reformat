@@ -9,7 +9,7 @@ https://chrome.google.com/webstore/devconsole → 用你的 Google 帳號登入 
 
 ## 1. 上傳套件
 
-「New item」→ 上傳 `dist/inline-reformat-0.1.1.zip`（repo 裡跑 `npm run pack` 重新產生）。
+「New item」→ 上傳 `dist/inline-reformat-0.1.2.zip`（repo 裡跑 `npm run pack` 重新產生）。
 
 ## 2. Store listing 分頁
 
@@ -57,7 +57,7 @@ Not supported: Google Docs (canvas rendering) and code editors like CodeMirror/M
 **Single purpose description（貼這段）**
 
 ```
-Rewrites the paragraph the user is typing into fluent English, using an LLM API endpoint and API key that the user configures themselves.
+Rewrites the paragraph the user is typing into fluent English when the user explicitly requests it (Alt+R by default; an optional automatic trigger is off by default), using an LLM API endpoint and API key that the user configures themselves.
 ```
 
 **Permission justifications（每格貼對應段落）**
@@ -77,7 +77,7 @@ Sends the paragraph being rewritten to the Anthropic Messages API when the user 
 - Content scripts on all sites（`<all_urls>`）:
 
 ```
-The extension's single purpose is to offer rewrite suggestions in any text field the user types in, on whatever site they happen to be writing (email, issue trackers, review systems). The content script only reads the field the user is actively typing in, and only the single paragraph under the caret is ever sent to the user-configured endpoint. No page content is read beyond that field, and nothing is collected or logged.
+The extension's single purpose is to offer rewrite suggestions in any text field the user types in, on whatever site they happen to be writing (email, issue trackers, review systems). The content script only reads the field the user is actively typing in, and by default nothing is sent anywhere until the user explicitly presses Alt+R; the optional automatic trigger is off by default. Only the single paragraph under the caret is ever sent, and only to the user-configured endpoint. No page content is read beyond that field, and nothing is collected or logged.
 ```
 
 - Optional host permissions（`https://*/*`, `http://*/*`）:
