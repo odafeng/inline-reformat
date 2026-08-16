@@ -1,10 +1,12 @@
 # Inline Reformat
 
+[![CI](https://github.com/odafeng/inline-reformat/actions/workflows/ci.yml/badge.svg)](https://github.com/odafeng/inline-reformat/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-1f883d.svg)](LICENSE)
+
 打字停頓 1.5 秒，你剛打的那段英文會被改寫成通順版本，出現在輸入框下方的小卡片裡。按 `Tab` 接受、`Esc` 關閉、繼續打字就自動消失。不用反白、不用右鍵、不用離開輸入框。
 
 [English README](README.md)
 
-![Ghost card 建議畫面](docs/assets/ghost-card.png)
+![打字 → ghost card 串流建議 → Tab 接受](docs/assets/demo.gif)
 
 做給整天要用英文寫信、寫論文、回 review 的非母語者。目標是取代「複製到 ChatGPT 再貼回來」那個循環。
 

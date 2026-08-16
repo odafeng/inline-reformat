@@ -1,10 +1,12 @@
 # Inline Reformat
 
+[![CI](https://github.com/odafeng/inline-reformat/actions/workflows/ci.yml/badge.svg)](https://github.com/odafeng/inline-reformat/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-1f883d.svg)](LICENSE)
+
 Pause typing for a second and a half, and the sentence you just wrote comes back as fluent English in a small card under the input box. Press `Tab` to accept it, `Esc` to dismiss, or just keep typing and it gets out of your way. No text selection, no right-click menu, no leaving the field.
 
 [繁體中文說明](README.zh-TW.md)
 
-![Ghost card suggesting a rewrite below a compose box](docs/assets/ghost-card.png)
+![Typing rough English, a ghost card streams in a rewrite, Tab accepts it](docs/assets/demo.gif)
 
 Built for people who write English as a second language all day (emails, papers, code review comments) and are tired of the copy-into-ChatGPT-paste-back loop.
 

@@ -9,7 +9,7 @@ https://chrome.google.com/webstore/devconsole → 用你的 Google 帳號登入 
 
 ## 1. 上傳套件
 
-「New item」→ 上傳 `dist/inline-reformat-0.1.0.zip`（repo 裡跑 `npm run pack` 重新產生）。
+「New item」→ 上傳 `dist/inline-reformat-0.1.1.zip`（repo 裡跑 `npm run pack` 重新產生）。
 
 ## 2. Store listing 分頁
 
